@@ -39,9 +39,8 @@ msg_ok "Configured Squid"
 msg_info "Installing SquidStats"
 $STD wget https://github.com/kaelthasmanu/SquidStats/releases/download/2.2/install.sh -O /tmp/squidstats-install.sh
 $STD chmod +x /tmp/squidstats-install.sh
-# Run installation script non-interactively
-export DEBIAN_FRONTEND=noninteractive
-yes "" | $STD /tmp/squidstats-install.sh || true
+# Run installation script in non-interactive mode
+$STD /tmp/squidstats-install.sh --non-interactive
 msg_ok "Installed SquidStats"
 
 msg_info "Verifying SquidStats Service"

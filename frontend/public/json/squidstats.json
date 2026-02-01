@@ -1,0 +1,46 @@
+{
+  "name": "SquidStats",
+  "slug": "squidstats",
+  "categories": [9, 21],
+  "date_created": "2026-02-01",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 5000,
+  "documentation": "https://github.com/kaelthasmanu/SquidStats",
+  "website": "https://github.com/kaelthasmanu/SquidStats",
+  "logo": "https://raw.githubusercontent.com/kaelthasmanu/SquidStats/d70f56a7778a3846fb1a0a2c70bc16475430fab3/assets/squidstats.png",
+  "config_path": "/opt/SquidStats/.env",
+  "description": "A modern tool for parsing and analyzing Squid logs, providing a sleek and user-friendly dashboard to visualize real-time connection data. Includes Squid proxy server pre-configured for immediate use.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/squidstats.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 16,
+        "os": "debian",
+        "version": "13"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": "admin",
+    "password": "admin"
+  },
+  "notes": [
+    {
+      "text": "SquidStats is accessible at http://YOUR_IP:5000 with default credentials (admin/admin). Change password immediately after first login.",
+      "type": "warning"
+    },
+    {
+      "text": "Squid proxy is running on port 3128. Configure clients to use this proxy or connect to a remote Squid instance by editing /opt/SquidStats/.env",
+      "type": "info"
+    },
+    {
+      "text": "For remote Squid setup, configure log forwarding via rsyslog or syslog-ng. See the official documentation for detailed instructions.",
+      "type": "info"
+    }
+  ]
+}

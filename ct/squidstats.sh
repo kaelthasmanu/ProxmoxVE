@@ -28,13 +28,37 @@ function update_script() {
     exit
   fi
 
-  msg_info "Updating SquidStats"
-  cd /opt/squidstats
-  $STD git pull
-  source venv/bin/activate
-  $STD pip install -r requirements.txt --upgrade
-  $STD systemctl restart squidstats
-  msg_ok "Updated successfully!"
+  RELEASE=$(curl -fsSL https://api.github.com/repos/kaelthasmanu/SquidStats/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
+  if [[ ! -f /opt/squidstats_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/squidstats_version.txt)" ]]; then
+    msg_info "Updating ${APP} to v${RELEASE}"
+
+    # Backup user data
+    msg_info "Backing up current installation"
+    $STD cp -r /opt/squidstats /opt/squidstats-backup
+
+    msg_info "Updating SquidStats"
+    cd /opt/squidstats
+    $STD git pull
+    source venv/bin/activate
+    $STD pip install -r requirements.txt --upgrade
+
+    # Restore user config if exists
+    if [[ -f /opt/squidstats-backup/.env ]]; then
+      msg_info "Restoring configuration"
+      $STD cp /opt/squidstats-backup/.env /opt/squidstats/.env
+    fi
+
+    # Update version file
+    echo "${RELEASE}" >"/opt/squidstats_version.txt"
+
+    $STD systemctl restart squidstats
+    msg_ok "Updated successfully!"
+
+    # Cleanup
+    rm -rf /opt/squidstats-backup
+  else
+    msg_ok "No update required. ${APP} is already at v${RELEASE}."
+  fi
   exit
 }
 

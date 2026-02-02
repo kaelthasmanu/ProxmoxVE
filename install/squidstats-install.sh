@@ -39,7 +39,7 @@ $STD systemctl restart squid
 msg_ok "Configured Squid"
 
 msg_info "Installing SquidStats"
-$STD wget https://github.com/kaelthasmanu/SquidStats/releases/download/${RELEASE}/install.sh -O /tmp/squidstats-install.sh
+$STD wget https://github.com/kaelthasmanu/SquidStats/releases/download/"${RELEASE}"/install.sh -O /tmp/squidstats-install.sh
 $STD chmod +x /tmp/squidstats-install.sh
 # Run installation script in non-interactive mode
 $STD /tmp/squidstats-install.sh --non-interactive

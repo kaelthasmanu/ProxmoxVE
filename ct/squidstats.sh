@@ -34,18 +34,18 @@ function update_script() {
 
     # Backup user data
     msg_info "Backing up current installation"
-    $STD cp -r /opt/squidstats /opt/squidstats-backup
+    $STD cp -r /opt/SquidStats /opt/SquidStats-backup
 
     msg_info "Updating SquidStats"
-    cd /opt/squidstats
+    cd /opt/SquidStats || exit
     $STD git pull
     source venv/bin/activate
     $STD pip install -r requirements.txt --upgrade
 
     # Restore user config if exists
-    if [[ -f /opt/squidstats-backup/.env ]]; then
+    if [[ -f /opt/SquidStats-backup/.env ]]; then
       msg_info "Restoring configuration"
-      $STD cp /opt/squidstats-backup/.env /opt/squidstats/.env
+      $STD cp /opt/SquidStats-backup/.env /opt/SquidStats/.env
     fi
 
     # Update version file
@@ -55,7 +55,7 @@ function update_script() {
     msg_ok "Updated successfully!"
 
     # Cleanup
-    rm -rf /opt/squidstats-backup
+    rm -rf /opt/SquidStats-backup
   else
     msg_ok "No update required. ${APP} is already at v${RELEASE}."
   fi

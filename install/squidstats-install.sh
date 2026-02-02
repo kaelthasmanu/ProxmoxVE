@@ -52,7 +52,7 @@ if systemctl is-active --quiet squidstats; then
   msg_ok "SquidStats service is running"
 else
   msg_info "Starting SquidStats service"
-  $STD systemctl enable squidstats
+  $STD systemctl enable -q --now squidstats
   $STD systemctl start squidstats
   msg_ok "SquidStats service started"
 fi

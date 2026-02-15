@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-RELEASE=$(curl -fsSL https://api.github.com/repos/kaelthasmanu/SquidStats/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
+RELEASE=$(curl -fsSL https://api.github.com/repos/kaelthasmanu/SquidStats/releases/latest | jq -r .tag_name)
 
 msg_info "Installing Dependencies"
 $STD apt install -y curl wget git python3 python3-{pip,venv} libmariadb-dev squid
@@ -48,13 +48,12 @@ msg_ok "Installed SquidStats"
 echo "${RELEASE}" >"/opt/squidstats_version.txt"
 
 msg_info "Verifying SquidStats Service"
-if systemctl is-active --quiet squidstats; then
-  msg_ok "SquidStats service is running"
-else
+if ! systemctl is-active --quiet squidstats; then
   msg_info "Starting SquidStats service"
-  $STD systemctl enable -q --now squidstats
-  $STD systemctl start squidstats
+  systemctl enable -q --now squidstats
   msg_ok "SquidStats service started"
+else
+  msg_ok "SquidStats service is already running"
 fi
 
 motd_ssh

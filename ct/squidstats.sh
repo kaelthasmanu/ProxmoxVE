@@ -28,7 +28,7 @@ function update_script() {
     exit
   fi
 
-  RELEASE=$(curl -fsSL https://api.github.com/repos/kaelthasmanu/SquidStats/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
+  RELEASE=$(curl -fsSL https://api.github.com/repos/kaelthasmanu/SquidStats/releases/latest | jq -r .tag_name)
   if [[ ! -f /opt/squidstats_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/squidstats_version.txt)" ]]; then
     msg_info "Updating ${APP} to v${RELEASE}"
 
